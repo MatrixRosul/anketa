@@ -183,8 +183,25 @@ input.note:disabled{opacity:.5}
 }
 .open .ans::placeholder{color:var(--muted)}
 
+.free{
+  margin:34px 0 0; padding:20px; border-radius:4px;
+  background:var(--surface); border:1px solid var(--rule);
+}
+.free h3{
+  font-family:var(--f-head); font-weight:700; font-size:20px; margin:0;
+}
+.free p{margin:8px 0 0;font-size:15px;line-height:1.5;color:var(--ink-2);max-width:56ch}
+textarea.freetext{
+  width:100%; margin:14px 0 0; min-height:150px;
+  font-family:var(--f-body); font-size:15.5px; line-height:1.5;
+  padding:12px; border-radius:3px;
+  border:1px solid var(--rule); background:var(--paper); color:var(--ink);
+  resize:vertical;
+}
+textarea.freetext::placeholder{color:var(--muted)}
+
 .send{
-  margin:44px 0 0; padding:22px; border-radius:4px;
+  margin:34px 0 0; padding:22px; border-radius:4px;
   background:var(--accent-soft); border:1px solid var(--accent);
 }
 .send h3{
@@ -212,6 +229,7 @@ textarea.out.show{display:block}
 @media print{
   body{background:#fff;color:#000;font-size:11pt}
   .howto,.send,.saveline,.bar{display:none!important}
+  textarea.freetext{min-height:60mm;border:1px solid #999}
   .controls{margin-left:46px}
   button.mark{border:1.2px solid #000;color:#000;background:#fff;padding:4px 10px}
   input.note,.open .ans{border:0;border-bottom:1px solid #999;border-radius:0;background:#fff}
@@ -428,7 +446,13 @@ openSec.innerHTML =
   OPEN.map((q, i) => '<li>' + q +
       '<input class="ans" type="text" maxlength="300" data-q="' + i +
       '" placeholder="відповідь"></li>').join('') +
-  '</ol></div>';
+  '</ol></div>' +
+  '<div class="free"><h3>Що ще важливо для вас</h3>' +
+  '<p>Усе, чого ми не спитали: особливості вашого товару, звички ' +
+  'покупців, минулий досвід зі складами, побажання до звітів чи ' +
+  'до термінів. Пишіть як є — це найкорисніша частина.</p>' +
+  '<textarea class="freetext" id="freetext" maxlength="4000" ' +
+  'placeholder="будь-що, що вважаєте за потрібне"></textarea></div>';
 doc.appendChild(openSec);
 
 const foot = document.createElement("div");
@@ -489,13 +513,15 @@ function load() {
     const raw = JSON.parse(localStorage.getItem(KEY) || "{}");
     Object.assign(state, raw.claims || {});
     (raw.answers || []).forEach((v, i) => { answers[i] = v || ""; });
+    free.text = raw.free || "";
   } catch (e) { /* приватне вікно або очищені дані — починаємо з чистого */ }
 }
 
 function store() {
   if (!canStore) return;
   try {
-    localStorage.setItem(KEY, JSON.stringify({ claims: state, answers: answers }));
+    localStorage.setItem(KEY, JSON.stringify({ claims: state, answers: answers,
+                                               free: free.text }));
   } catch (e) {
     document.getElementById("saveline").textContent =
       "Браузер не дає зберігати — не закривайте вкладку, поки не скопіюєте відповіді.";
@@ -503,6 +529,7 @@ function store() {
 }
 
 const answers = [];
+const free = { text: "" };   // вільне поле наприкінці
 
 function wire() {
   doc.querySelectorAll(".claim").forEach(el => {
@@ -526,6 +553,17 @@ function wire() {
       t = setTimeout(store, 500);
     };
   });
+
+  const ft = document.getElementById("freetext");
+  if (ft) {
+    ft.value = free.text || "";
+    let tf = null;
+    ft.oninput = () => {
+      free.text = ft.value;
+      clearTimeout(tf);
+      tf = setTimeout(store, 500);
+    };
+  }
 
   doc.querySelectorAll(".open .ans").forEach(inp => {
     const i = Number(inp.dataset.q);
@@ -574,6 +612,13 @@ function summary() {
     L.push("");
     L.push("── ПІДХОДИТЬ ──");
     L.push(ok.join(", "));
+  }
+
+  const extra = (free.text || "").trim();
+  if (extra) {
+    L.push("");
+    L.push("── ЩО ЩЕ ВАЖЛИВО ──");
+    L.push(extra);
   }
 
   const missed = ids.filter(i => !(state[i] && state[i].verdict));
