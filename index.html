@@ -84,7 +84,7 @@ header.top{
   text-transform:uppercase; color:var(--muted);
 }
 h1{
-  font-family:var(--f-head); font-weight:700;
+  font-family:var(--f-head); font-weight:700; overflow-wrap:break-word;
   font-size:clamp(30px,5.6vw,46px); line-height:1.08;
   margin:12px 0 0; text-wrap:balance;
 }
@@ -105,14 +105,14 @@ h1{
 .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
 
 section{padding-top:52px}
-.stage{display:flex;align-items:baseline;gap:14px}
+.stage{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .stage-n{
   font-family:var(--f-mono); font-size:13px; font-weight:400;
   color:var(--accent); letter-spacing:.05em; flex:none;
   padding-top:4px;
 }
 h2{
-  font-family:var(--f-head); font-weight:700;
+  font-family:var(--f-head); font-weight:700; overflow-wrap:break-word; min-width:0;
   font-size:clamp(23px,3.4vw,31px); line-height:1.15;
   margin:0; text-wrap:balance;
 }
