@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Логіка складу МІНІТРАНС</title>
+<style>
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0}
+  [hidden]{display:none!important}
+</style>
+<style>
+:root{
+  --paper:#EAEEF0;
+  --surface:#F7F9FA;
+  --surface-2:#DEE5E8;
+  --ink:#121A1E;
+  --ink-2:#37454B;
+  --muted:#68787F;
+  --rule:#C6D0D5;
+  --rule-soft:#D8E0E3;
+  --accent:#0B6E75;
+  --accent-ink:#075258;
+  --accent-soft:#D2E6E6;
+  --flag:#9C5A0B;
+  --flag-soft:#F0E2CE;
+  --yes:#1B6A45;
+  --yes-soft:#D5E8DD;
+  --no:#A33326;
+  --no-soft:#F3DBD6;
+
+  --f-head:Georgia,'Times New Roman',serif;
+  --f-body:system-ui,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1416;
+    --surface:#161E21;
+    --surface-2:#1F292D;
+    --ink:#E4EBED;
+    --ink-2:#B4C1C6;
+    --muted:#87969C;
+    --rule:#2B3639;
+    --rule-soft:#212B2E;
+    --accent:#4FBCC0;
+    --accent-ink:#7FD5D6;
+    --accent-soft:#12302F;
+    --flag:#D8A25A;
+    --flag-soft:#2E2417;
+    --yes:#5CC494;
+    --yes-soft:#122C22;
+    --no:#E5806E;
+    --no-soft:#2E1917;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1416; --surface:#161E21; --surface-2:#1F292D;
+  --ink:#E4EBED; --ink-2:#B4C1C6; --muted:#87969C;
+  --rule:#2B3639; --rule-soft:#212B2E;
+  --accent:#4FBCC0; --accent-ink:#7FD5D6; --accent-soft:#12302F;
+  --flag:#D8A25A; --flag-soft:#2E2417;
+  --yes:#5CC494; --yes-soft:#122C22;
+  --no:#E5806E; --no-soft:#2E1917;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:var(--f-body); font-size:16.5px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:74ch;margin:0 auto;padding:0 20px 120px}
+
+header.top{
+  border-bottom:1px solid var(--rule);
+  background:var(--surface);
+  margin-bottom:0;
+}
+.top-in{max-width:74ch;margin:0 auto;padding:52px 20px 0}
+.eyebrow{
+  font-family:var(--f-mono); font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted);
+}
+h1{
+  font-family:var(--f-head); font-weight:700;
+  font-size:clamp(30px,5.6vw,46px); line-height:1.08;
+  margin:12px 0 0; text-wrap:balance;
+}
+.stand{font-size:18px;line-height:1.5;color:var(--ink-2);margin:16px 0 0;max-width:58ch}
+.howto{
+  margin:28px 0 0; padding:16px 18px;
+  background:var(--accent-soft); border:1px solid var(--accent);
+  border-radius:4px; font-size:15px; line-height:1.5;
+}
+.howto b{color:var(--accent-ink)}
+.progress{
+  display:flex; align-items:baseline; gap:16px; flex-wrap:wrap;
+  padding:18px 0 20px; font-family:var(--f-mono); font-size:12.5px;
+  color:var(--muted); letter-spacing:.03em;
+}
+.progress b{font-size:15px;color:var(--ink)}
+.bar{flex:1 1 160px;height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden;min-width:120px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+
+section{padding-top:52px}
+.stage{display:flex;align-items:baseline;gap:14px}
+.stage-n{
+  font-family:var(--f-mono); font-size:13px; font-weight:400;
+  color:var(--accent); letter-spacing:.05em; flex:none;
+  padding-top:4px;
+}
+h2{
+  font-family:var(--f-head); font-weight:700;
+  font-size:clamp(23px,3.4vw,31px); line-height:1.15;
+  margin:0; text-wrap:balance;
+}
+.intro{margin:12px 0 0;color:var(--ink-2);font-size:16px;max-width:62ch}
+
+.claims{margin:22px 0 0;border-top:1px solid var(--rule)}
+.claim{border-bottom:1px solid var(--rule-soft);padding:16px 0}
+.claim:last-child{border-bottom:1px solid var(--rule)}
+.claim-head{display:flex;gap:12px;align-items:baseline}
+.claim-id{
+  font-family:var(--f-mono); font-size:11.5px; color:var(--muted);
+  flex:none; min-width:34px; padding-top:2px;
+}
+.claim-text{flex:1;font-size:16.5px;line-height:1.5}
+.claim-text em{font-style:normal;color:var(--accent-ink);font-weight:700}
+.why{
+  margin:7px 0 0 46px; font-size:14.5px; line-height:1.5; color:var(--muted);
+}
+.controls{display:flex;gap:8px;margin:12px 0 0 46px;flex-wrap:wrap;align-items:center}
+button.mark{
+  font-family:var(--f-body); font-size:14px; font-weight:700;
+  padding:7px 14px; border-radius:3px; cursor:pointer;
+  background:var(--surface); color:var(--ink-2);
+  border:1px solid var(--rule); line-height:1.2;
+}
+button.mark:hover{border-color:var(--muted)}
+button.mark[aria-pressed="true"].ok{background:var(--yes-soft);border-color:var(--yes);color:var(--yes)}
+button.mark[aria-pressed="true"].no{background:var(--no-soft);border-color:var(--no);color:var(--no)}
+button.mark:disabled{opacity:.45;cursor:default}
+input.note{
+  flex:1 1 240px; min-width:180px;
+  font-family:var(--f-body); font-size:14.5px;
+  padding:7px 10px; border-radius:3px;
+  border:1px solid var(--rule); background:var(--surface); color:var(--ink);
+}
+input.note::placeholder{color:var(--muted)}
+input.note:disabled{opacity:.5}
+.claim[data-v="no"]{background:var(--no-soft)}
+.claim[data-v="no"] .claim-id{color:var(--no)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.open{
+  margin:22px 0 0; border:1px solid var(--flag);
+  background:var(--flag-soft); border-radius:4px; padding:4px 18px 18px;
+}
+.open h3{
+  font-family:var(--f-mono); font-size:12px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--flag); margin:18px 0 0;
+}
+.open ol{margin:12px 0 0;padding-left:1.2em}
+.open li{margin:9px 0;font-size:15.5px;line-height:1.5}
+.open li::marker{color:var(--flag)}
+
+.foot{
+  margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
+  font-size:14px;color:var(--muted);
+}
+.foot p{max-width:60ch;margin:10px 0 0}
+.saveline{
+  font-family:var(--f-mono);font-size:12px;color:var(--muted);
+  margin:10px 0 0;letter-spacing:.02em;
+}
+.open .ans{
+  margin:8px 0 0; width:100%;
+  font-family:var(--f-body); font-size:15px;
+  padding:8px 10px; border-radius:3px;
+  border:1px solid var(--flag); background:var(--surface); color:var(--ink);
+}
+.open .ans::placeholder{color:var(--muted)}
+
+.send{
+  margin:44px 0 0; padding:22px; border-radius:4px;
+  background:var(--accent-soft); border:1px solid var(--accent);
+}
+.send h3{
+  font-family:var(--f-head); font-weight:700; font-size:22px;
+  margin:0; color:var(--accent-ink);
+}
+.send p{margin:10px 0 0;font-size:15.5px;line-height:1.5;color:var(--ink-2);max-width:56ch}
+.send-row{display:flex;gap:10px;margin:18px 0 0;flex-wrap:wrap;align-items:center}
+button.big{
+  font-family:var(--f-body); font-size:16px; font-weight:700;
+  padding:13px 22px; border-radius:3px; cursor:pointer;
+  background:var(--accent); color:var(--surface); border:1px solid var(--accent);
+}
+button.big.ghost{background:transparent;color:var(--accent-ink)}
+button.big:hover{opacity:.9}
+.copied{font-size:14.5px;font-weight:700;color:var(--yes)}
+textarea.out{
+  width:100%; margin:16px 0 0; min-height:220px; display:none;
+  font-family:var(--f-mono); font-size:12.5px; line-height:1.5;
+  padding:12px; border-radius:3px; border:1px solid var(--rule);
+  background:var(--surface); color:var(--ink); resize:vertical;
+}
+textarea.out.show{display:block}
+
+@media print{
+  body{background:#fff;color:#000;font-size:11pt}
+  .howto,.send,.saveline,.bar{display:none!important}
+  .controls{margin-left:46px}
+  button.mark{border:1.2px solid #000;color:#000;background:#fff;padding:4px 10px}
+  input.note,.open .ans{border:0;border-bottom:1px solid #999;border-radius:0;background:#fff}
+  section{page-break-inside:auto}
+  .claim{page-break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="eyebrow">Для звірки · вересень 2026</div>
+    <h1>Як я зрозумів роботу складу</h1>
+    <p class="stand">Нижче — уся логіка складу так, як я її зрозумів і як закладаю в систему. Кожне твердження можна перевірити окремо. Якщо хоч одне не збігається з тим, як ви працюєте, — система буде побудована неправильно, і краще дізнатися про це зараз.</p>
+    <div class="howto">
+      <b>Що з цим робити.</b> Пройдіть по твердженнях і позначте кожне: «так» — якщо у вас саме так, «у нас інакше» — якщо ні. У другому випадку напишіть одним рядком, як насправді. Наприкінці буде кнопка, яка збере всі ваші відповіді в текст — його треба надіслати назад. Можна не поспішати: позначки зберігаються, вкладку можна закрити й повернутися.
+    </div>
+    <div class="howto" id="warn" hidden style="background:var(--flag-soft);border-color:var(--flag)">
+      <b style="color:var(--flag)">Увага.</b> Цей браузер не дозволяє зберігати
+      відповіді. Заповнюйте за один раз і не закривайте вкладку, поки не
+      натиснете «Скопіювати відповіді» внизу. Або натисніть «Роздрукувати»
+      і заповніть на папері.
+    </div>
+    <div class="progress">
+      <span>Позначено <b id="done">0</b> з <b id="total">0</b></span>
+      <span>Розбіжностей <b id="diffs">0</b></span>
+      <div class="bar"><i id="bar"></i></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="doc"></div>
+
+<script>
+const STAGES = [
+  {
+    n: "Основа",
+    title: "Чотири правила, на яких тримається все інше",
+    intro: "Якщо хоч одне з них у вас порушується — решта документа втрачає сенс, бо система будується саме на них.",
+    claims: [
+      ["0.1", "Кожен рух товару фіксується сканером <em>у момент, коли він відбувається</em> — не наприкінці дня і не з памʼяті.",
+       "Це головна відмінність від роботи в Excel: там залишок правильний раз на день, тут — завжди."],
+      ["0.2", "Кожен рух має прізвище й час. Тому кожен заходить у термінал під своїм PIN.",
+       "На питання «де мої 12 штук» відповідь має бути з прізвищем комірника й часом сканування."],
+      ["0.3", "Залишок ніхто не редагує руками. Він рахується з журналу рухів, а виправити його можна <em>тільки новим рухом</em> — з причиною й автором.",
+       "Тому в системі не буде кнопки «поставити правильну цифру»."],
+      ["0.4", "Одиниця обліку — це <em>товар + партія в конкретній комірці</em>, а не просто «товар на складі».",
+       "Інакше неможливо ані FEFO, ані нормальна інвентаризація."],
+    ],
+  },
+  {
+    n: "Крок 1",
+    title: "Приймання",
+    intro: "Від приїзду машини до того, як товар отримав адресу.",
+    claims: [
+      ["1.1", "Поставка заводиться в систему <em>до приїзду машини</em>, з очікуваними позиціями й кількостями. Якщо документа немає — приймання йде «наосліп», комірник рахує, система звіряє потім.", ""],
+      ["1.2", "Коробки й палети на розвантаженні рахуються <em>окремо від штук</em>, бо тарифікуються окремо.", "У прайсі це «розвантаження коробки — 20 грн» і «розвантаження палети»."],
+      ["1.3", "Товар розпізнається по штрихкоду. Якщо коду немає в довіднику — позиція не приймається, поки її не заведуть.", ""],
+      ["1.4", "Якщо у товару немає свого штрихкоду або він збігається з чужим (пробники, тестери, мініатюри) — на нього клеїться <em>власний код складу</em>, і це окрема платна послуга.", "У вашій останній поставці таких позицій 17."],
+      ["1.5", "Для кожної позиції вводяться номер партії й термін придатності. <em>Без терміну позиція не приймається.</em>", ""],
+      ["1.6", "Якщо залишковий термін менший за домовлений із клієнтом — приймання зупиняється, потрібне письмове підтвердження клієнта.", ""],
+      ["1.7", "Фактична кількість може не збігтися з планом. Розбіжність фіксується окремо, але приймання через неї не блокується.", ""],
+      ["1.8", "Брак рахується окремою кількістю й іде в окрему зону, а не в загальний залишок.", ""],
+      ["1.9", "Один товар в одній поставці може приїхати коробками різного розміру — це <em>окремі рядки приймання</em>.", "Як «2000+1000» у вашому робочому файлі."],
+    ],
+  },
+  {
+    n: "Крок 2",
+    title: "Розміщення",
+    intro: "Товар прийнято — тепер він має отримати адресу.",
+    claims: [
+      ["2.1", "<em>Система каже, у яку комірку нести.</em> Комірник не обирає місце сам.", ""],
+      ["2.2", "Комірник сканує етикетку комірки — це підтвердження, що товар потрапив саме туди, куди сказано.", ""],
+      ["2.3", "Якщо відсканована не та комірка — операція не проходить, товар не списується.", ""],
+      ["2.4", "В одній комірці не змішуються різні клієнти. І не змішуються різні партії одного товару.", "Це робить перерахунок однозначним, а суперечку — вирішуваною."],
+      ["2.5", "Найходовіший товар лежить ближче до зони відвантаження, повільний — далі.", "На складі 51 метр завдовжки це економить до половини пробігу комірника."],
+    ],
+  },
+  {
+    n: "Крок 3",
+    title: "Партії та терміни",
+    intro: "Те, заради чого взагалі потрібен партійний облік.",
+    claims: [
+      ["3.1", "Партія — це товар із конкретною датою придатності й датою приймання. Один товар може мати кілька партій одночасно.", ""],
+      ["3.2", "Для товару з терміном придатності першою відвантажується <em>партія, яка раніше псується</em> — не та, що раніше приїхала.", "Це FEFO. Різниця важлива щоразу, коли постачальник привіз довший або коротший термін, ніж попереднього разу."],
+      ["3.3", "Для товару без терміну першою йде та партія, що раніше приїхала.", "Це FIFO — режим за замовчуванням."],
+      ["3.4", "Партія, у якої лишилося менше домовленого відсотка терміну, <em>сама йде в карантин</em> і не пропонується під звичайні замовлення.", ""],
+      ["3.5", "Клієнт регулярно отримує список партій, які скоро згорять.", "Це і захист від претензій, і привід продати переупакування або списання."],
+    ],
+  },
+  {
+    n: "Крок 4",
+    title: "Замовлення й резерв",
+    intro: "Що відбувається між тим, як замовлення прийшло, і тим, як комірник пішов у ряд.",
+    claims: [
+      ["4.1", "Замовлення приходить від клієнта файлом або через інтеграцію, а не диктується по телефону.", ""],
+      ["4.2", "Замовлення береться в роботу тільки якщо весь товар є. Часткове відвантаження — лише з дозволу клієнта.", ""],
+      ["4.3", "Коли замовлення взяли в роботу, товар <em>резервується</em>: конкретна партія в конкретній комірці. Інше замовлення її вже не забере.", ""],
+      ["4.4", "Замовлення до 20 одиниць вважається роздрібним, від 21 — оптовим. Тип рахується за <em>фактично зібраною</em> кількістю, а не замовленою.", "Від цього залежить тариф."],
+      ["4.5", "Є час відсічки. Замовлення, що прийшло після нього, їде наступного дня.", ""],
+    ],
+  },
+  {
+    n: "Крок 5",
+    title: "Відбір",
+    intro: "Найбільша частина роботи складу — сюди йде близько половини всіх людино-годин.",
+    claims: [
+      ["5.1", "Замовлення збираються хвилями, а не по одному в міру надходження.", ""],
+      ["5.2", "Один комірник збирає <em>кілька замовлень одночасно</em>, розкладаючи товар по гніздах візка.", "Це головна економія: один прохід по складу замість десяти."],
+      ["5.3", "В одній хвилі не змішуються клієнти.", "Змішаний візок економить кроки й породжує пересорт між клієнтами — найдорожчу помилку з можливих."],
+      ["5.4", "Система будує маршрут так, щоб комірник ішов уперед і не вертався.", ""],
+      ["5.5", "На кожній позиції комірник сканує спершу комірку, потім товар. Обидва скани — перевірка, а не формальність.", ""],
+      ["5.6", "Якщо в комірці менше, ніж треба, комірник вводить фактичну кількість, і система шукає решту в іншій комірці.", ""],
+    ],
+  },
+  {
+    n: "Крок 6",
+    title: "Пакування",
+    intro: "Останній момент, коли помилку ще можна спіймати.",
+    claims: [
+      ["6.1", "Пакувальник сканує візок або замовлення, і система показує, що має бути в коробці.", ""],
+      ["6.2", "Ваги звіряють фактичну вагу з розрахунковою. <em>Якщо не збігається — замовлення не закривається.</em>", "Не поклали одну баночку — ваги це побачать. Це головний захист від недокладу."],
+      ["6.3", "Вкладення — документи, промо, товарний чек — система нагадує окремо, бо кожне тарифікується.", ""],
+      ["6.4", "Накладна перевізника друкується із системи, номер зберігається в замовленні.", ""],
+    ],
+  },
+  {
+    n: "Крок 7",
+    title: "Відвантаження",
+    intro: "",
+    claims: [
+      ["7.1", "Коробки скануються в рейс, формується реєстр перевізника.", ""],
+      ["7.2", "Товар списується із залишку <em>в момент відвантаження</em>, а не в момент відбору.", "До передачі перевізнику він ще ваш і ще на складі — просто зарезервований."],
+    ],
+  },
+  {
+    n: "Крок 8",
+    title: "Повернення",
+    intro: "",
+    claims: [
+      ["8.1", "Повернення приймається з посиланням на початкове замовлення, а не як нова поставка.", ""],
+      ["8.2", "Кожна одиниця оглядається: придатна — повертається в сток <em>тією ж партією</em>; непридатна — у брак.", "Повернути «просто в залишок» без партії не можна, інакше термін придатності загубиться."],
+      ["8.3", "Повернення тарифікується як половина від суми відвантаження й доукомплектації.", "Так записано у вашому прайсі 2026."],
+    ],
+  },
+  {
+    n: "Крок 9",
+    title: "Інвентаризація",
+    intro: "",
+    claims: [
+      ["9.1", "Повний перерахунок — рідко. Основна форма — циклічний: щодня перераховується кілька комірок.", ""],
+      ["9.2", "Комірник рахує «наосліп» — система не показує, скільки має бути.", "Інакше людина підтверджує цифру, а не рахує."],
+      ["9.3", "Розбіжність не виправляється мовчки: це окремий рух із причиною й автором.", ""],
+    ],
+  },
+  {
+    n: "Крок 10",
+    title: "Гроші",
+    intro: "Те, чого немає в готових складських системах і заради чого має сенс своя.",
+    claims: [
+      ["10.1", "Кожна операція одразу створює тарифну подію: розвантажили коробку, прийняли одиницю, наклеїли стікер, відвантажили замовлення.", "Не наприкінці місяця запитом до залишків, а тієї ж секунди."],
+      ["10.2", "Ціна проставляється вночі, а не в момент операції, бо ставка за роздрібне замовлення <em>залежить від кількості замовлень за добу</em>.", "25 грн при 20 замовленнях і 14 грн при 500+ — цифра відома тільки о 23:59."],
+      ["10.3", "Зберігання рахується щодоби: скільки палето-місць і кубометрів займав клієнт. Місячний рахунок — сума добових зрізів.", "Інакше клієнт, який завіз 2-го й вивіз 28-го, заплатить за нуль."],
+      ["10.4", "Акт формується автоматично, і до кожної гривні можна показати конкретну операцію з часом і прізвищем.", ""],
+    ],
+  },
+];
+
+const OPEN = [
+  "Який відсоток залишкового терміну домовлений із клієнтами — 60%, 70%, чи в кожного свій?",
+  "Чи всі клієнти надсилають документ поставки заздалегідь, чи буває приймання наосліп?",
+  "Часткове відвантаження дозволене за замовчуванням, чи тільки з окремого дозволу клієнта?",
+  "Скільки замовлень реально збирає один комірник за один прохід — 10, 15, 20?",
+  "Чи є замовлення, які збираються поодинці, без візка? Великий опт, наприклад.",
+  "Хто вирішує, що партія йде в карантин — система автоматично чи людина щоразу?",
+  "Чи буває, що клієнт просить відвантажити конкретну партію, всупереч FEFO?",
+  "Як зараз оформляється брак, виявлений при прийманні? Хто складає акт?",
+  "Чи буває, що на одній палеті лежить товар кількох клієнтів?",
+  "О котрій реально має бути готове відвантаження, щоб устигнути до перевізника?",
+];
+
+// ── Малюємо документ ────────────────────────────────────────────────
+const doc = document.getElementById("doc");
+const ids = [];          // показувані ідентифікатори, у порядку документа
+const textOf = {};       // показуваний -> текст твердження без розмітки
+const plain = h => h.replace(/<[^>]+>/g, "");
+
+STAGES.forEach((st, i) => {
+  const sec = document.createElement("section");
+  const head = document.createElement("div");
+  head.className = "stage";
+  head.innerHTML = '<span class="stage-n">' + st.n + '</span><h2>' + st.title + '</h2>';
+  sec.appendChild(head);
+  if (st.intro) {
+    const p = document.createElement("p");
+    p.className = "intro";
+    p.textContent = st.intro;
+    sec.appendChild(p);
+  }
+  const list = document.createElement("div");
+  list.className = "claims";
+  st.claims.forEach(([id, text, why]) => {
+    ids.push(id);
+    textOf[id] = plain(text);
+    const c = document.createElement("div");
+    c.className = "claim";
+    c.dataset.id = id;
+    c.innerHTML =
+      '<div class="claim-head"><span class="claim-id">' + id + '</span>' +
+      '<span class="claim-text">' + text + '</span></div>' +
+      (why ? '<div class="why">' + why + '</div>' : '') +
+      '<div class="controls">' +
+        '<button class="mark ok" type="button" aria-pressed="false" disabled>Так, у нас так</button>' +
+        '<button class="mark no" type="button" aria-pressed="false" disabled>У нас інакше</button>' +
+        '<input class="note" type="text" maxlength="200" disabled placeholder="як насправді — одним рядком">' +
+      '</div>';
+    list.appendChild(c);
+  });
+  sec.appendChild(list);
+  doc.appendChild(sec);
+});
+
+const openSec = document.createElement("section");
+openSec.innerHTML =
+  '<div class="stage"><span class="stage-n">Окремо</span>' +
+  '<h2>Чого я не знаю і вигадав за вас</h2></div>' +
+  '<p class="intro">Тут я не здогадувався, а просто не маю даних. Ці відповіді потрібні мені найбільше — від них залежать конкретні цифри в системі.</p>' +
+  '<div class="open"><h3>Питання до менеджера</h3><ol>' +
+  OPEN.map((q, i) => '<li>' + q +
+      '<input class="ans" type="text" maxlength="300" data-q="' + i +
+      '" placeholder="відповідь"></li>').join('') +
+  '</ol></div>';
+doc.appendChild(openSec);
+
+const foot = document.createElement("div");
+foot.className = "foot";
+foot.innerHTML =
+  '<p>Документ описує цільову логіку — те, як склад працюватиме після запуску системи, ' +
+  'а не те, як він працює сьогодні. Розбіжність між цими двома станами — це і є обсяг змін.</p>' +
+  '<p class="saveline" id="saveline">Позначки зберігаються у цьому браузері.</p>';
+doc.appendChild(foot);
+
+document.getElementById("total").textContent = ids.length;
+
+// ── Стан ────────────────────────────────────────────────────────────
+const state = {};   // id -> {verdict, note}
+
+function paint(id) {
+  const el = doc.querySelector('.claim[data-id="' + id + '"]');
+  if (!el) return;
+  const s = state[id] || {};
+  const [ok, no] = el.querySelectorAll("button.mark");
+  const note = el.querySelector("input.note");
+  ok.setAttribute("aria-pressed", String(s.verdict === "ok"));
+  no.setAttribute("aria-pressed", String(s.verdict === "no"));
+  if (s.verdict) el.dataset.v = s.verdict; else delete el.dataset.v;
+  if (document.activeElement !== note) note.value = s.note || "";
+}
+
+function tally() {
+  const marked = ids.filter(i => state[i] && state[i].verdict);
+  const diffs = marked.filter(i => state[i].verdict === "no");
+  document.getElementById("done").textContent = marked.length;
+  document.getElementById("diffs").textContent = diffs.length;
+  document.getElementById("bar").style.width =
+    (ids.length ? (marked.length / ids.length * 100) : 0) + "%";
+}
+
+// ── Збереження ──────────────────────────────────────────────────────
+// Позначки живуть у браузері того, хто заповнює. Нікуди не
+// відправляються самі: наприкінці анкети є кнопка, яка збирає все
+// в текст для пересилання. Так сторінку можна відкрити без жодного
+// акаунта — достатньо посилання.
+const KEY = "minitrans-logika-v1";
+
+// Перевіряємо сховище одразу: приватне вікно, старий браузер або
+// відкритий з файлу телефон можуть його не дати.
+const canStore = (() => {
+  try {
+    localStorage.setItem(KEY + "-test", "1");
+    localStorage.removeItem(KEY + "-test");
+    return true;
+  } catch (e) { return false; }
+})();
+if (!canStore) document.getElementById("warn").hidden = false;
+
+function load() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY) || "{}");
+    Object.assign(state, raw.claims || {});
+    (raw.answers || []).forEach((v, i) => { answers[i] = v || ""; });
+  } catch (e) { /* приватне вікно або очищені дані — починаємо з чистого */ }
+}
+
+function store() {
+  if (!canStore) return;
+  try {
+    localStorage.setItem(KEY, JSON.stringify({ claims: state, answers: answers }));
+  } catch (e) {
+    document.getElementById("saveline").textContent =
+      "Браузер не дає зберігати — не закривайте вкладку, поки не скопіюєте відповіді.";
+  }
+}
+
+const answers = [];
+
+function wire() {
+  doc.querySelectorAll(".claim").forEach(el => {
+    const id = el.dataset.id;
+    const [ok, no] = el.querySelectorAll("button.mark");
+    const note = el.querySelector("input.note");
+    ok.disabled = no.disabled = note.disabled = false;
+
+    const setV = v => {
+      const cur = (state[id] || {}).verdict;
+      state[id] = Object.assign({}, state[id], { verdict: cur === v ? "" : v });
+      paint(id); tally(); store();
+    };
+    ok.onclick = () => setV("ok");
+    no.onclick = () => setV("no");
+
+    let t = null;
+    note.oninput = () => {
+      state[id] = Object.assign({}, state[id], { note: note.value });
+      clearTimeout(t);
+      t = setTimeout(store, 500);
+    };
+  });
+
+  doc.querySelectorAll(".open .ans").forEach(inp => {
+    const i = Number(inp.dataset.q);
+    inp.value = answers[i] || "";
+    let t = null;
+    inp.oninput = () => {
+      answers[i] = inp.value;
+      clearTimeout(t);
+      t = setTimeout(store, 500);
+    };
+  });
+}
+
+// ── Підсумок для пересилання ────────────────────────────────────────
+function summary() {
+  const marked = ids.filter(i => state[i] && state[i].verdict);
+  const diff = marked.filter(i => state[i].verdict === "no");
+  const ok = marked.filter(i => state[i].verdict === "ok");
+  const L = [];
+  L.push("ЛОГІКА СКЛАДУ МІНІТРАНС — відповіді");
+  L.push("Позначено " + marked.length + " з " + ids.length +
+         ", розбіжностей " + diff.length);
+
+  if (diff.length) {
+    L.push("");
+    L.push("── У НАС ІНАКШЕ ──");
+    diff.forEach(i => {
+      L.push(i + "  " + textOf[i]);
+      const n = (state[i].note || "").trim();
+      L.push("     -> " + (n || "(як саме — не вказано)"));
+    });
+  }
+
+  const answered = answers.map((v, i) => [i, (v || "").trim()])
+                          .filter(([, v]) => v);
+  if (answered.length) {
+    L.push("");
+    L.push("── ВІДПОВІДІ НА ПИТАННЯ ──");
+    answered.forEach(([i, v]) => {
+      L.push((i + 1) + ". " + OPEN[i]);
+      L.push("     -> " + v);
+    });
+  }
+
+  if (ok.length) {
+    L.push("");
+    L.push("── ПІДТВЕРДЖЕНО ──");
+    L.push(ok.join(", "));
+  }
+
+  const missed = ids.filter(i => !(state[i] && state[i].verdict));
+  if (missed.length) {
+    L.push("");
+    L.push("── НЕ ПОЗНАЧЕНО (" + missed.length + ") ──");
+    L.push(missed.join(", "));
+  }
+  return L.join("\n");
+}
+
+// ── Панель наприкінці ───────────────────────────────────────────────
+const send = document.createElement("div");
+send.className = "send";
+send.innerHTML =
+  "<h3>Готово? Надішліть відповіді</h3>" +
+  "<p>Ваші позначки збережені тільки у цьому браузері й нікуди не " +
+  "йдуть самі. Натисніть кнопку — увесь підсумок скопіюється, " +
+  "і його можна вставити у Viber, Telegram чи пошту.</p>" +
+  '<div class="send-row">' +
+  '<button class="big" id="btn-copy" type="button">Скопіювати відповіді</button>' +
+  '<button class="big ghost" id="btn-show" type="button">Показати текстом</button>' +
+  '<button class="big ghost" id="btn-print" type="button">Роздрукувати</button>' +
+  '<span class="copied" id="copied" hidden>Скопійовано</span>' +
+  "</div>" +
+  '<textarea class="out" id="out" readonly></textarea>';
+doc.insertBefore(send, doc.querySelector(".foot"));
+
+document.getElementById("btn-copy").onclick = async () => {
+  const text = summary();
+  const out = document.getElementById("out");
+  out.value = text;
+  const flash = () => {
+    const c = document.getElementById("copied");
+    c.hidden = false;
+    setTimeout(() => { c.hidden = true; }, 2500);
+  };
+  try {
+    await navigator.clipboard.writeText(text);
+    flash();
+  } catch (e) {
+    // Буфер обміну недоступний — показуємо текст, щоб виділити руками
+    out.classList.add("show");
+    out.focus();
+    out.select();
+  }
+};
+document.getElementById("btn-show").onclick = () => {
+  const out = document.getElementById("out");
+  out.value = summary();
+  out.classList.toggle("show");
+};
+document.getElementById("btn-print").onclick = () => window.print();
+
+load();
+wire();
+ids.forEach(paint);
+tally();
+document.getElementById("saveline").textContent =
+  "Позначки зберігаються у цьому браузері автоматично.";
+</script>
+
+</body>
+</html>
