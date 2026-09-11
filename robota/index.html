@@ -3,397 +3,250 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
 <title>Як ми працюємо разом</title>
 <style>
-:root{
-  --paper:#EAEEF0; --surface:#F7F9FA; --surface-2:#E4EAEC;
-  --ink:#121A1E; --ink-2:#37454B; --muted:#68787F;
-  --rule:#C6D0D5; --rule-soft:#D8E0E3;
-  --you:#9C5A0B; --you-soft:#F5E9D8;
-  --us:#0B6E75; --us-soft:#D6E8E8;
-  --f-head:Georgia,'Times New Roman',serif;
-  --f-body:system-ui,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#0E1416; --surface:#161E21; --surface-2:#1F292D;
-    --ink:#E4EBED; --ink-2:#B4C1C6; --muted:#87969C;
-    --rule:#2B3639; --rule-soft:#212B2E;
-    --you:#D8A25A; --you-soft:#2E2417;
-    --us:#4FBCC0; --us-soft:#12302F;
+  :root{
+    --ink:#111417; --ink-2:#3B4348; --muted:#6E777C;
+    --rule:#C9CFD2; --rule-soft:#E3E7E9;
+    --paper:#FFFFFF; --tint:#F4F6F7;
+    --serif:Georgia,'Times New Roman',serif;
+    --sans:system-ui,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   }
-}
-:root[data-theme="dark"]{
-  --paper:#0E1416; --surface:#161E21; --surface-2:#1F292D;
-  --ink:#E4EBED; --ink-2:#B4C1C6; --muted:#87969C;
-  --rule:#2B3639; --rule-soft:#212B2E;
-  --you:#D8A25A; --you-soft:#2E2417;
-  --us:#4FBCC0; --us-soft:#12302F;
-}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--paper);color:var(--ink);
-  font-family:var(--f-body);font-size:16px;line-height:1.55;
-}
-.wrap{max-width:860px;margin:0 auto;padding:0 clamp(14px,4vw,28px) 72px}
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:#E9ECEE;color:var(--ink);
+    font-family:var(--serif);font-size:16px;line-height:1.55;
+  }
+  .sheet{
+    max-width:820px;margin:0 auto;background:var(--paper);
+    padding:46px clamp(20px,5vw,64px) 70px;
+    box-shadow:0 1px 3px rgba(0,0,0,.10);
+  }
 
-header{padding:44px 0 0}
-.kicker{
-  font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--muted);margin:0 0 10px
-}
-h1{
-  font-family:var(--f-head);font-weight:700;
-  font-size:clamp(26px,5vw,38px);line-height:1.18;margin:0;
-  text-wrap:balance
-}
-.lead{
-  font-size:17px;color:var(--ink-2);margin:16px 0 0;max-width:60ch;
-  line-height:1.6
-}
+  .top{text-align:center;border-bottom:2px solid var(--ink);padding-bottom:18px}
+  .kicker{
+    font-family:var(--sans);font-size:11.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  h1{font-size:clamp(20px,3.2vw,27px);margin:10px 0 0;line-height:1.25;font-weight:700;text-wrap:balance}
+  .sub{font-size:15px;color:var(--ink-2);margin:9px 0 0}
 
-.principle{
-  margin:26px 0 0;padding:16px 18px;background:var(--surface);
-  border:1px solid var(--rule-soft);border-left:3px solid var(--us);
-  border-radius:3px
-}
-.principle p{margin:0;font-size:15.5px;color:var(--ink-2)}
-.principle b{color:var(--ink)}
+  .intro{margin:24px 0 0;font-size:15.5px;line-height:1.6;color:var(--ink-2)}
+  .intro b{color:var(--ink)}
 
-section{margin:44px 0 0}
-h2{
-  font-family:var(--f-head);font-size:clamp(19px,3vw,23px);font-weight:700;
-  margin:0;padding:0 0 10px;border-bottom:2px solid var(--ink);
-  display:flex;align-items:baseline;gap:12px
-}
-h2 .num{
-  font-family:var(--f-body);font-size:12px;font-weight:700;
-  color:var(--muted);letter-spacing:.08em
-}
+  h2{
+    font-family:var(--sans);font-size:14.5px;font-weight:700;
+    letter-spacing:.04em;text-transform:uppercase;
+    margin:34px 0 0;padding-bottom:7px;border-bottom:1px solid var(--rule);
+  }
+  ol.cl{list-style:none;counter-reset:c;padding:0;margin:14px 0 0}
+  ol.cl > li{
+    position:relative;padding-left:52px;margin:13px 0;
+    font-size:15.5px;line-height:1.55;
+  }
+  ol.cl > li::before{
+    content:attr(data-n);position:absolute;left:0;top:1px;
+    font-family:var(--sans);font-size:13.5px;font-weight:700;
+    color:var(--ink-2);
+  }
+  ol.cl b{font-weight:700}
+  .who{font-weight:700;color:var(--ink)}
+  .note{font-size:14px;color:var(--muted);margin-top:4px;line-height:1.45}
 
-.lanes{display:grid;gap:14px;margin:18px 0 0}
-@media (min-width:720px){ .lanes.two{grid-template-columns:1fr 1fr;align-items:start} }
+  table{border-collapse:collapse;width:100%;margin:14px 0 0;font-size:14.5px}
+  th{
+    font-family:var(--sans);font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;text-align:left;color:var(--muted);
+    padding:0 10px 7px 0;border-bottom:1px solid var(--rule);
+    font-weight:700;vertical-align:bottom;
+  }
+  td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  td:last-child,th:last-child{padding-right:0}
+  td.val{color:var(--muted);font-family:var(--sans);font-size:13.5px}
+  .scroll{overflow-x:auto}
 
-.lane{
-  background:var(--surface);border:1px solid var(--rule-soft);
-  border-radius:3px;padding:14px 16px 16px
-}
-.tag{
-  display:inline-block;font-size:11px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;
-  padding:3px 9px;border-radius:2px;margin:0 0 10px
-}
-.lane.you .tag{background:var(--you-soft);color:var(--you)}
-.lane.us  .tag{background:var(--us-soft); color:var(--us)}
-.lane.you{border-top:2px solid var(--you)}
-.lane.us {border-top:2px solid var(--us)}
+  .foot{
+    margin-top:36px;padding-top:16px;border-top:1px solid var(--rule-soft);
+    font-family:var(--sans);font-size:12.5px;color:var(--muted);line-height:1.5;
+  }
 
-.lane ul{margin:0;padding:0;list-style:none}
-.lane li{
-  position:relative;padding-left:17px;margin:0 0 9px;font-size:15px;
-  line-height:1.5
-}
-.lane li:last-child{margin-bottom:0}
-.lane li::before{
-  content:"";position:absolute;left:0;top:9px;
-  width:6px;height:1.5px;background:var(--rule)
-}
-.lane li b{font-weight:600}
-.why{
-  display:block;color:var(--muted);font-size:13.5px;margin-top:3px;
-  line-height:1.45
-}
+  .actions{
+    max-width:820px;margin:22px auto;display:flex;gap:10px;flex-wrap:wrap;
+    padding:0 clamp(20px,5vw,64px);
+  }
+  .actions button{
+    font-family:var(--sans);font-size:14.5px;font-weight:700;padding:11px 18px;
+    border-radius:5px;border:1px solid #B7BFC4;background:#fff;color:var(--ink);cursor:pointer;
+  }
+  .actions button.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-.flat{
-  background:var(--surface);border:1px solid var(--rule-soft);
-  border-radius:3px;padding:14px 16px 16px;margin:18px 0 0
-}
-.flat ul{margin:0;padding:0;list-style:none}
-.flat li{position:relative;padding-left:17px;margin:0 0 9px;font-size:15px;line-height:1.5}
-.flat li:last-child{margin-bottom:0}
-.flat li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:1.5px;background:var(--rule)}
-
-.need{margin:18px 0 0;border-top:1px solid var(--rule)}
-.need div{
-  display:flex;gap:14px;justify-content:space-between;
-  padding:11px 2px;border-bottom:1px solid var(--rule-soft);
-  font-size:15px;flex-wrap:wrap
-}
-.need span:last-child{color:var(--muted);font-size:14px;text-align:right}
-
-footer{
-  margin:52px 0 0;padding:18px 0 0;border-top:1px solid var(--rule);
-  color:var(--muted);font-size:14px;line-height:1.55
-}
-
-@media print{
-  body{background:#fff}
-  .lane,.flat,.principle{break-inside:avoid}
-  section{break-inside:avoid-page}
-}
+  @media print{
+    body{background:#fff}
+    .sheet{box-shadow:none;max-width:none;padding:0}
+    .actions{display:none}
+    h2{page-break-after:avoid}
+    ol.cl > li{page-break-inside:avoid}
+    @page{size:A4;margin:16mm 15mm}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<header>
-  <p class="kicker">Склад МІНІТРАНС · Бровари</p>
-  <h1>Як ми працюємо разом</h1>
-  <p class="lead">
-    Хто що робить на кожному кроці: що ви нам передаєте, що робимо ми
-    і що ви отримуєте назад. Це робоча картина роботи складу, а не
-    юридичний текст — щоб обидві сторони однаково розуміли щоденний процес.
-  </p>
-</header>
-
-<div class="principle">
-  <p>
-    <b>Усе проходить через обмін між системами.</b> Довідники, заявки на
-    поставку, замовлення й залишки ходять між вашою BAS і нашою системою
-    напряму. Пошта, месенджери й телефон лишаються для розмов і термінових
-    питань, але робочі дані ми беремо тільки з обміну — інакше їх ніхто не
-    може відтворити пізніше.
-  </p>
+<div class="actions">
+  <button class="pri" onclick="window.print()">Друк / зберегти в PDF</button>
 </div>
 
-<section>
-  <h2><span class="num">01</span> Перед стартом</h2>
-  <div class="lanes two">
-    <div class="lane us">
-      <span class="tag">Ми</span>
-      <ul>
-        <li>Даємо все для налаштування обміну: опис інтерфейсу, адресу служби, код організації та код складу.</li>
-        <li>Відкриваємо тестовий майданчик, щоб перевірити обмін до того, як приїде перший реальний товар.</li>
-        <li>Ставимо ваші фото товару на екрани терміналів комірників.
-          <span class="why">Комірник бачить, що саме шукає — менше помилок при відборі.</span>
-        </li>
-        <li>Якщо на якісь позиції у вас немає ваги й габаритів — зважуємо та обмірюємо самі, вносимо в картку й повертаємо вам.
-          <span class="why">Платна послуга за прайсом.</span>
-        </li>
-      </ul>
-    </div>
-    <div class="lane you">
-      <span class="tag">Ви надсилаєте</span>
-      <ul>
-        <li>Довідник товарів: назва, артикул, штрихкод, вага, габарити, скільки штук у коробці, номінальний строк придатності.</li>
-        <li>Фотографії товару.</li>
-        <li>Позначку в картці для позицій, до яких строк придатності не застосовується.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="flat">
-    <ul>
-      <li><b>Пробники, тестери й семпли — окремі позиції.</b> Якщо на пробнику стоїть штрихкод повнорозмірного товару, сканер їх не розрізнить. Такі позиції звіряємо разом і робимо для них власний код складу — це окрема платна послуга.</li>
-      <li><b>Змінили упаковку чи штрихкод — кажіть до того, як товар приїде.</b> Одна позиція може мати кілька штрихкодів, і без попередження ми не відрізняємо зміну від помилки. Приймання такої позиції зупиниться до зʼясування.</li>
-      <li><b>Інший обʼєм чи тип упаковки — це новий товар.</b> Потрібен окремий артикул і окремий штрихкод.</li>
-    </ul>
-  </div>
-</section>
+<div class="sheet">
 
-<section>
-  <h2><span class="num">02</span> Товар їде на склад</h2>
-  <div class="lanes two">
-    <div class="lane you">
-      <span class="tag">Ви надсилаєте</span>
-      <ul>
-        <li>Заявку на поставку <b>не пізніше ніж за 24 години</b> до прибуття машини: позиції, кількості, строки придатності.</li>
-        <li>Відповідь на протокол розбіжності — того ж дня, коли ми його надіслали.</li>
-        <li>Підтвердження, що робити з надлишком, якщо привезли більше, ніж у документі.</li>
-      </ul>
-    </div>
-    <div class="lane us">
-      <span class="tag">Ми</span>
-      <ul>
-        <li>Оглядаємо палети на пошкодження одразу після розвантаження, ще до поштучного приймання.
-          <span class="why">Пошкодження в дорозі фіксується, поки машина ще поруч.</span>
-        </li>
-        <li>Приймаємо поштучно.</li>
-        <li>Строк придатності беремо <b>з упаковки товару</b>, а не з накладної. Якщо у вашому документі його немає або він хибний — ставимо фактичний і повертаємо вам.</li>
-        <li>На кожну розбіжність складаємо протокол і надсилаємо в день приймання.</li>
-        <li>Надлишок приймаємо на майданчик, але на зберігання ставимо лише після вашого підтвердження.</li>
-      </ul>
-    </div>
+  <div class="top">
+    <div class="kicker">Склад МІНІТРАНС · Бровари</div>
+    <h1>Як ми працюємо разом</h1>
+    <p class="sub">Порядок роботи складу: що робимо ми і що передаєте ви</p>
   </div>
-</section>
 
-<section>
-  <h2><span class="num">03</span> Пошкоджений товар</h2>
-  <div class="lanes two">
-    <div class="lane us">
-      <span class="tag">Ми</span>
-      <ul>
-        <li>Відкладаємо в карантин, фотографуємо й не змішуємо з придатним, доки ви не вирішите.</li>
-        <li>Пошкоджений, але придатний до продажу — виводимо в окрему позицію <b>«Уцінка»</b>: до артикула додається остання цифра 1. Вона обліковується й продається окремо.</li>
-        <li>Непридатний до продажу — списуємо одразу, на залишок він не потрапляє.</li>
-        <li>Фото надсилаємо вашій відповідальній особі.</li>
-      </ul>
-    </div>
-    <div class="lane you">
-      <span class="tag">Ви</span>
-      <ul>
-        <li>Вирішуєте долю товару в карантині.</li>
-        <li>Підписуєте акт на бій і брак — менеджер із закупівель та операційний менеджер.</li>
-      </ul>
-    </div>
-  </div>
-</section>
+  <p class="intro">
+    Нижче — щоденний процес по кроках, від налаштування обміну до рахунку
+    за місяць. <b>«Ми»</b> — склад МІНІТРАНС, <b>«ви»</b> — ваша компанія.
+    Якщо якийсь крок у вас влаштований інакше, скажіть — підлаштуємо.
+  </p>
 
-<section>
-  <h2><span class="num">04</span> Строки придатності</h2>
-  <div class="flat">
-    <ul>
-      <li><b>Мінімальний залишковий строк для відвантаження — один місяць</b>, якщо в замовленні не сказано інше.</li>
-      <li>Ви можете вказати потрібні строки прямо в замовленні. Якщо не вказали — першим іде товар, у якого строк закінчується раніше.
-        <span class="why">Оптовим покупцям зазвичай потрібен товар зі строком понад 12 місяців, для роздрібних діє звичайний порядок.</span>
-      </li>
-      <li>Партію з коротшим строком, ніж погоджений, <b>ми не приймаємо на склад без вашого письмового дозволу</b>.</li>
-      <li>Облік строків ведете ви у своїй системі. Ми передаємо вам актуальні залишки в розрізі партій.</li>
-    </ul>
-  </div>
-</section>
+  <h2>1. Обмін даними</h2>
+  <ol class="cl">
+    <li data-n="1.1"><span class="who">Ми й ви.</span> Довідники, заявки на поставку, замовлення й залишки ходять між вашою обліковою системою та нашою напряму, через обмін. Пошта, месенджери й телефон лишаються для розмов і термінових питань, але робочі дані ми беремо тільки з обміну.
+      <div class="note">Інакше їх ніхто не може відтворити пізніше — а саме на це спирається будь-яка суперечка про кількість.</div>
+    </li>
+    <li data-n="1.2"><span class="who">Ми.</span> Даємо все потрібне для налаштування: опис інтерфейсу, адресу служби, код організації та код складу.</li>
+    <li data-n="1.3"><span class="who">Ми.</span> Відкриваємо тестовий майданчик, щоб перевірити обмін до того, як приїде перший реальний товар.</li>
+    <li data-n="1.4"><span class="who">Ми.</span> Синхронізуємо залишки складу з вашою системою.</li>
+    <li data-n="1.5"><span class="who">Ми.</span> Наприкінці кожного робочого дня передаємо реєстр відправлень за день.</li>
+  </ol>
 
-<section>
-  <h2><span class="num">05</span> Замовлення на відвантаження</h2>
-  <div class="lanes two">
-    <div class="lane you">
-      <span class="tag">Ви передаєте</span>
-      <ul>
-        <li>Самі замовлення — через обмін.</li>
-        <li>Ознаку <b>опт чи роздріб</b>: її визначає ваша система, і від неї залежить тариф.</li>
-        <li>Ознаку <b>ЕКСПРЕС</b> на термінових — вони йдуть поза чергою.</li>
-        <li>Скориговану накладну, якщо товару не вистачило: кол-центр виправляє й повертає замовлення на збірку.</li>
-      </ul>
-    </div>
-    <div class="lane us">
-      <span class="tag">Ми</span>
-      <ul>
-        <li>Відправляємо <b>двічі на добу — о 12:00 і о 18:00</b>. Кожна відправка має свій часовий проміжок; що прийшло пізніше, їде наступною або наступного робочого дня.</li>
-        <li>Збираємо рівно те, що зазначено в замовленні: товар, тестери й супровідні вкладення.</li>
-        <li>Зʼясовуємо причину, якщо товару на складі не вистачило.</li>
-        <li>Скасувати чи змінити замовлення можна, доки воно не зібране. Розібрати вже зібране — окрема платна операція за тарифом приймання.</li>
-      </ul>
-    </div>
-  </div>
-</section>
+  <h2>2. Дані про товар</h2>
+  <ol class="cl">
+    <li data-n="2.1"><span class="who">Ви.</span> Передаєте довідник товарів: назва, артикул, штрихкод, вага одиниці, габарити, скільки штук у коробці, номінальний строк придатності.</li>
+    <li data-n="2.2"><span class="who">Ви.</span> Передаєте фотографії товару — ми ставимо їх на екрани терміналів комірників.
+      <div class="note">Комірник бачить, що саме шукає, і рідше помиляється при відборі.</div>
+    </li>
+    <li data-n="2.3"><span class="who">Ми.</span> Якщо на якісь позиції у вас немає ваги й габаритів, зважуємо та обмірюємо самі, вносимо в картку товару й повертаємо вам. Послуга платна, за чинним прайсом.</li>
+    <li data-n="2.4"><span class="who">Ви.</span> Повідомляєте про зміну упаковки чи штрихкоду до того, як такий товар приїде на склад.
+      <div class="note">Одна позиція може мати кілька штрихкодів. Без попередження ми не відрізняємо зміну від помилки, і приймання позиції зупиняється до зʼясування.</div>
+    </li>
+    <li data-n="2.5"><span class="who">Ви.</span> Інший обʼєм або тип упаковки заводите як новий товар — з окремим артикулом і окремим штрихкодом.</li>
+    <li data-n="2.6"><span class="who">Ми й ви.</span> Пробники, тестери й семпли обліковуються окремими позиціями. Є заводський штрихкод — працюємо за ним; немає — робимо власний код складу й наносимо його, це окрема платна послуга.</li>
+    <li data-n="2.7"><span class="who">Ми й ви.</span> Окремо звіряємо позиції, на яких стоїть штрихкод повнорозмірного товару: сканер їх не розрізняє, і кожній потрібен власний код.</li>
+    <li data-n="2.8"><span class="who">Ви.</span> Позначаєте в картці позиції, до яких строк придатності не застосовується.</li>
+  </ol>
 
-<section>
-  <h2><span class="num">06</span> Пакування</h2>
-  <div class="lanes two">
-    <div class="lane you">
-      <span class="tag">Ви даєте</span>
-      <ul>
-        <li>Коробки й пакувальний матеріал.</li>
-        <li>Брендований скотч для оптових відправлень.</li>
-        <li>Погодження, якщо потрібен третій розмір коробки.</li>
-      </ul>
-    </div>
-    <div class="lane us">
-      <span class="tag">Ми</span>
-      <ul>
-        <li>Зберігаємо ваш пакувальний матеріал, списуємо в момент пакування й показуємо залишок.
-          <span class="why">Щоб ви бачили, коли його поповнити.</span>
-        </li>
-        <li>Працюємо з розмірами <b>170×120×100</b> і <b>240×170×100 мм</b>.</li>
-        <li>Добираємо коробку під замовлення й заповнюємо порожнечу, щоб товар не побився в дорозі.</li>
-        <li>Зважуємо кожну коробку й звіряємо з розрахунковою вагою. Не збіглося — замовлення не їде, поки не зʼясуємо.
-          <span class="why">Це ловить і зайву, і забуту позицію.</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
+  <h2>3. Поставки на склад</h2>
+  <ol class="cl">
+    <li data-n="3.1"><span class="who">Ви.</span> Надсилаєте заявку на поставку <b>не пізніше ніж за 24 години</b> до прибуття машини: позиції, кількості, строки придатності.</li>
+    <li data-n="3.2"><span class="who">Ми.</span> Приймаємо у два етапи. Спершу оглядаємо палети на пошкодження одразу після розвантаження, далі приймаємо поштучно.
+      <div class="note">Пошкодження, отримане в дорозі, фіксується, поки машина ще поруч.</div>
+    </li>
+    <li data-n="3.3"><span class="who">Ми.</span> Строк придатності беремо <b>з упаковки товару</b>, а не з накладної. Якщо у вашому документі його немає або він хибний, ставимо фактичний і повертаємо вам.</li>
+    <li data-n="3.4"><span class="who">Ми й ви.</span> На кожну розбіжність складаємо протокол і надсилаємо в день приймання. Ви відповідаєте того ж дня.</li>
+    <li data-n="3.5"><span class="who">Ми й ви.</span> Якщо привезли більше, ніж у документі, приймаємо надлишок на майданчик, але на зберігання ставимо лише після вашого підтвердження.</li>
+  </ol>
 
-<section>
-  <h2><span class="num">07</span> Відправка</h2>
-  <div class="lanes two">
-    <div class="lane you">
-      <span class="tag">Ви</span>
-      <ul>
-        <li>Формуєте накладну перевізника у своїй системі.</li>
-        <li>Надсилаєте окреме повідомлення, якщо накладну треба роздрукувати в нас.</li>
-      </ul>
-    </div>
-    <div class="lane us">
-      <span class="tag">Ми</span>
-      <ul>
-        <li>Передаємо перевізнику двічі на добу. Основний — <b>Нова Пошта</b>, інші за погодженням.</li>
-        <li>Самовивіз вашими силами чи третьою особою — як виняток, за окремим погодженням.</li>
-        <li>Наприкінці кожного робочого дня передаємо реєстр відправлень за день.</li>
-      </ul>
-    </div>
-  </div>
-</section>
+  <h2>4. Бій, брак і уцінка</h2>
+  <ol class="cl">
+    <li data-n="4.1"><span class="who">Ми.</span> Пошкоджений товар відкладаємо в карантин, фотографуємо й не змішуємо з придатним, доки ви не вирішите його долю.</li>
+    <li data-n="4.2"><span class="who">Ми.</span> Пошкоджений, але придатний до продажу виводимо в окрему позицію <b>«Уцінка»</b>: до артикула додається остання цифра 1. Вона обліковується й продається окремо.</li>
+    <li data-n="4.3"><span class="who">Ми.</span> Непридатний до продажу списуємо одразу — на залишок він не потрапляє.</li>
+    <li data-n="4.4"><span class="who">Ми.</span> Фотографії пошкодженого товару надсилаємо вашій відповідальній особі.</li>
+    <li data-n="4.5"><span class="who">Ви.</span> Акт на бій і брак підписують ваші менеджер із закупівель та операційний менеджер.</li>
+  </ol>
 
-<section>
-  <h2><span class="num">08</span> Повернення</h2>
-  <div class="lanes two">
-    <div class="lane us">
-      <span class="tag">Ми</span>
-      <ul>
-        <li>Приймаємо повернення <b>за номером замовлення</b>, з якого воно відправлялося.</li>
-        <li>Оглядаємо кожну одиницю: придатна — повертається у ту саму партію; пошкоджена, але придатна — на «Уцінку»; непридатна — у брак із фото.</li>
-        <li>Якщо номер замовлення встановити не вдається — повідомляємо вашого операційного менеджера.</li>
-        <li>Обробляємо повернення щодня, раз на тиждень надсилаємо звіт відповідальній особі з копією операційному директору.</li>
-      </ul>
-    </div>
-    <div class="lane you">
-      <span class="tag">Ви</span>
-      <ul>
-        <li>Створюєте заявку на приймання у своїй системі, якщо повернення приїхало без розпізнаваного номера замовлення — вона надійде до нас через обмін.</li>
-      </ul>
-    </div>
-  </div>
-</section>
+  <h2>5. Строки придатності</h2>
+  <ol class="cl">
+    <li data-n="5.1"><span class="who">Ми.</span> Мінімальний залишковий строк для відвантаження — <b>один місяць</b>, якщо в замовленні не зазначено інше.</li>
+    <li data-n="5.2"><span class="who">Ви.</span> Можете вказати потрібні строки прямо в замовленні. Якщо не вказали, першим відвантажується товар, у якого строк закінчується раніше.
+      <div class="note">Оптовим покупцям зазвичай потрібен товар зі строком понад 12 місяців; для роздрібних діє звичайний порядок.</div>
+    </li>
+    <li data-n="5.3"><span class="who">Ми.</span> Партію зі строком, коротшим за погоджений, не приймаємо на склад без вашого письмового дозволу.</li>
+    <li data-n="5.4"><span class="who">Ви.</span> Ведете облік строків у своїй системі — ми передаємо вам актуальні залишки в розрізі партій.</li>
+  </ol>
 
-<section>
-  <h2><span class="num">09</span> Залишки й перевірки</h2>
-  <div class="flat">
-    <ul>
-      <li>Вибіркову інвентаризацію робимо <b>щодня</b>, починаючи з найдорожчих позицій.</li>
-      <li>Повна інвентаризація — раз на рік або на вашу вимогу. Запрошуємо вашого представника.</li>
-      <li>На будь-яку розбіжність даємо історію рухів по позиції: коли, ким і в якій кількості товар переміщено.
-        <span class="why">Це відповідь на спірне «у мене було 480, ви віддали 468».</span>
-      </li>
-    </ul>
-  </div>
-</section>
+  <h2>6. Замовлення на відвантаження</h2>
+  <ol class="cl">
+    <li data-n="6.1"><span class="who">Ви.</span> Передаєте замовлення через обмін.</li>
+    <li data-n="6.2"><span class="who">Ми.</span> Відправляємо <b>двічі на добу — о 12:00 і о 18:00</b>. Кожна відправка має свій часовий проміжок; замовлення, що прийшло пізніше, їде наступною відправкою або наступного робочого дня.</li>
+    <li data-n="6.3"><span class="who">Ви.</span> Термінові замовлення позначаєте ознакою <b>«ЕКСПРЕС»</b> — вони виконуються поза чергою.</li>
+    <li data-n="6.4"><span class="who">Ви.</span> Визначаєте у своїй системі, оптове замовлення чи роздрібне, і передаєте ознаку в замовленні. Від неї залежить тариф.</li>
+    <li data-n="6.5"><span class="who">Ми.</span> Збираємо рівно те, що зазначено в замовленні: товар, тестери й супровідні вкладення.</li>
+    <li data-n="6.6"><span class="who">Ми й ви.</span> Якщо товару не вистачає, ви бачите нестачу через контроль залишків, кол-центр коригує накладну й повертає замовлення на збірку. Ми встановлюємо причину нестачі.</li>
+    <li data-n="6.7"><span class="who">Ви.</span> Скасувати чи змінити замовлення можна, доки воно не зібране. Розібрати вже зібране — окрема платна операція за тарифом приймання.</li>
+  </ol>
 
-<section>
-  <h2><span class="num">10</span> Кабінет і рахунки</h2>
-  <div class="flat">
-    <ul>
-      <li>Ваші спеціалісти отримують доступ до кабінету: залишки, строки придатності, рух товару й стан замовлень.</li>
-      <li>Залишки складу синхронізуються з вашою системою через обмін.</li>
-      <li>Рахунок за місяць даємо з розшифровкою за кожною операцією.</li>
-    </ul>
-  </div>
-</section>
+  <h2>7. Пакування</h2>
+  <ol class="cl">
+    <li data-n="7.1"><span class="who">Ви.</span> Надаєте коробки й пакувальний матеріал. Ми зберігаємо їх, списуємо в момент пакування й показуємо залишок.
+      <div class="note">Щоб ви бачили, коли його треба поповнити.</div>
+    </li>
+    <li data-n="7.2"><span class="who">Ми й ви.</span> Погоджені розміри коробок — <b>170×120×100</b> і <b>240×170×100 мм</b>. Третій розмір додається за погодженням.</li>
+    <li data-n="7.3"><span class="who">Ви.</span> Для оптових відправлень надаєте брендований скотч — коробки в цьому разі звичайні.</li>
+    <li data-n="7.4"><span class="who">Ми.</span> Добираємо коробку під замовлення й заповнюємо порожній простір, щоб товар не побився в дорозі.</li>
+    <li data-n="7.5"><span class="who">Ми.</span> Зважуємо кожну коробку й звіряємо з розрахунковою вагою, яку система рахує з ваги й габаритів товару. За розбіжності замовлення не відправляється до зʼясування.
+      <div class="note">Це ловить і зайву, і забуту позицію.</div>
+    </li>
+  </ol>
 
-<section>
-  <h2><span class="num">11</span> Що лишилось узгодити</h2>
-  <p class="lead" style="font-size:15.5px;margin-top:14px">
-    Це параметри, які залежать від вашого боку. Щойно назвете — вони стають
+  <h2>8. Відправка</h2>
+  <ol class="cl">
+    <li data-n="8.1"><span class="who">Ви.</span> Формуєте накладну перевізника у своїй системі. Ми друкуємо її на ваш запит, надісланий окремим повідомленням.</li>
+    <li data-n="8.2"><span class="who">Ми й ви.</span> Основний перевізник — <b>Нова Пошта</b>. Інші, зокрема запропоновані вами, — за погодженням.</li>
+    <li data-n="8.3"><span class="who">Ми.</span> Передаємо перевізнику двічі на добу. Самовивіз вашими силами або третьою особою можливий як виняток, за окремим погодженням.</li>
+  </ol>
+
+  <h2>9. Повернення</h2>
+  <ol class="cl">
+    <li data-n="9.1"><span class="who">Ми.</span> Приймаємо повернення <b>за номером замовлення</b>, з якого воно відправлялося.</li>
+    <li data-n="9.2"><span class="who">Ми.</span> Оглядаємо кожну одиницю: придатна до продажу повертається в ту саму партію; пошкоджена, але придатна — на позицію «Уцінка»; непридатна — у брак, із фотофіксацією.</li>
+    <li data-n="9.3"><span class="who">Ми й ви.</span> Якщо номер замовлення встановити неможливо, повідомляємо вашого операційного менеджера. Ви створюєте заявку на приймання у своїй системі, і вона надходить до нас через обмін.</li>
+    <li data-n="9.4"><span class="who">Ми.</span> Обробляємо повернення щодня. Раз на тиждень надсилаємо звіт відповідальній особі з копією операційному директору.</li>
+  </ol>
+
+  <h2>10. Інвентаризація</h2>
+  <ol class="cl">
+    <li data-n="10.1"><span class="who">Ми.</span> Вибіркову інвентаризацію проводимо щодня, з пріоритетом на найдорожчі позиції.</li>
+    <li data-n="10.2"><span class="who">Ми й ви.</span> Повна інвентаризація — раз на рік або на вашу вимогу. Запрошуємо вашого представника.</li>
+    <li data-n="10.3"><span class="who">Ми.</span> На кожну виявлену розбіжність даємо історію рухів по позиції: коли, ким і в якій кількості товар переміщено.</li>
+  </ol>
+
+  <h2>11. Кабінет і рахунки</h2>
+  <ol class="cl">
+    <li data-n="11.1"><span class="who">Ми.</span> Надаємо доступ до особистого кабінету: залишки, строки придатності, рух товарів і стан замовлень.</li>
+    <li data-n="11.2"><span class="who">Ви.</span> Називаєте перелік своїх спеціалістів, яким потрібен доступ.</li>
+    <li data-n="11.3"><span class="who">Ми.</span> Рахунок за місяць надаємо з розшифровкою за кожною операцією.</li>
+  </ol>
+
+  <h2>12. Що лишилось узгодити</h2>
+  <p class="intro" style="margin-top:12px">
+    Ці параметри залежать від вашого боку. Щойно назвете — вони стають
     частиною щоденної роботи; змінити їх можна будь-коли листом.
   </p>
-  <div class="need">
-    <div><span>Час відсічки під відправку о 12:00</span><span>—</span></div>
-    <div><span>Час відсічки під відправку о 18:00</span><span>—</span></div>
-    <div><span>Відповідальна особа кол-центру</span><span>ПІБ, телефон</span></div>
-    <div><span>Кому надсилати фото пошкодженого товару</span><span>ПІБ, контакт</span></div>
-    <div><span>Хто підписує акт на бій і брак</span><span>менеджер із закупівель, операційний менеджер</span></div>
-    <div><span>Операційний директор для копій звітів</span><span>ПІБ, e-mail</span></div>
-    <div><span>Хто отримує доступ до кабінету</span><span>відділ закупок, операційний і технічний менеджер</span></div>
-    <div><span>Чи потрібен третій розмір коробки</span><span>розмір</span></div>
-    <div><span>Позиції, яким потрібен власний штрихкод</span><span>звіряємо разом</span></div>
+  <div class="scroll">
+    <table>
+      <tr><th>Параметр</th><th>Значення</th></tr>
+      <tr><td>Мінімальний залишковий строк придатності</td><td class="val">1 місяць</td></tr>
+      <tr><td>Час відсічки під відправку о 12:00</td><td class="val">—</td></tr>
+      <tr><td>Час відсічки під відправку о 18:00</td><td class="val">—</td></tr>
+      <tr><td>Ознака термінового замовлення</td><td class="val">ЕКСПРЕС</td></tr>
+      <tr><td>Розміри коробок</td><td class="val">170×120×100; 240×170×100; третій розмір</td></tr>
+      <tr><td>Відповідальна особа кол-центру</td><td class="val">ПІБ, телефон</td></tr>
+      <tr><td>Кому надсилати фото пошкодженого товару</td><td class="val">ПІБ, контакт</td></tr>
+      <tr><td>Хто підписує акт на бій і брак</td><td class="val">менеджер із закупівель, операційний менеджер</td></tr>
+      <tr><td>Операційний директор для копій звітів</td><td class="val">ПІБ, e-mail</td></tr>
+      <tr><td>Хто отримує доступ до кабінету</td><td class="val">відділ закупок, операційний і технічний менеджер</td></tr>
+      <tr><td>Позиції, яким потрібен власний штрихкод</td><td class="val">звіряємо разом</td></tr>
+    </table>
   </div>
-</section>
 
-<footer>
-  Якщо якийсь крок у вас влаштований інакше — скажіть, підлаштуємо під ваш
-  процес. Тарифи на згадані тут платні операції — за чинним прайсом.
-</footer>
+  <p class="foot">
+    Тарифи на згадані тут платні операції — за чинним прайсом складу.
+  </p>
 
 </div>
 </body>
